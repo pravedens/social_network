@@ -1,7 +1,7 @@
 <template>
-<div>
-    personal
-</div>
+    <div class="w-96 mx-auto">
+        personal
+    </div>
 </template>
 
 <script>

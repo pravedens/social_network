@@ -1,10 +1,20 @@
 <template>
-    <div class="w-25">
-        <input v-model="name" type="name" placeholder="name" class="form-control mt-3 mb-3">
-        <input v-model="email" type="email" placeholder="email" class="form-control mb-3">
-        <input v-model="password" type="password" placeholder="password" class="form-control mb-3 ">
-        <input v-model="password_confirmation" type="password" placeholder="password_confirmation" class="form-control mb-3">
-        <input @click.prevent="register" type="submit" value="register" class="btn btn-primary">
+    <div class="w-96 mx-auto">
+        <div>
+            <input v-model="name" type="name" placeholder="name" class="w-96 p-1 mb-2 border border-inherit rounded-lg">
+        </div>
+        <div>
+            <input v-model="email" type="email" placeholder="email" class="w-96 p-1 mb-2 border border-inherit rounded-lg">
+        </div>
+        <div>
+            <input v-model="password" type="password" placeholder="password" class="w-96 p-1 mb-2 border border-inherit rounded-lg">
+        </div>
+        <div>
+            <input v-model="password_confirmation" type="password" placeholder="password_confirmation" class="w-96 p-1 mb-2 border border-inherit rounded-lg">
+        </div>
+        <div>
+            <input @click.prevent="register" type="submit" value="register" class="block float-right mx-auto w-32 p-1 bg-sky-400 text-white rounded-lg">
+        </div>
     </div>
 </template>
 
