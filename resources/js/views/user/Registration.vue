@@ -13,7 +13,7 @@
             <input v-model="password_confirmation" type="password" placeholder="password_confirmation" class="w-96 p-1 mb-2 border border-inherit rounded-lg">
         </div>
         <div>
-            <input @click.prevent="register" type="submit" value="register" class="block float-right mx-auto w-32 p-1 bg-sky-400 text-white rounded-lg">
+            <input @click.prevent="register" type="submit" value="register" class="block p-2 w-32 text-center rounded-3xl bg-green-600 text-white hover:bg-white hover:border hover:border-green-600 hover:text-green-600">
         </div>
     </div>
 </template>
