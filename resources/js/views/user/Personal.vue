@@ -8,7 +8,7 @@
                 <textarea v-model="content" class="w-96 mb-3 rounded-3xl border border-slate-400 p-2" placeholder="content"></textarea>
             </div>
             <div class="flex mb-3">
-                <a href="#" class="block p-2 w-32 text-center rounded-3xl bg-green-600 text-white hover:bg-white hover:border hover:border-green-600 hover:text-green-600">Publish</a>
+                <a @click.prevent="store" href="#" class="block p-2 w-32 text-center rounded-3xl bg-green-600 text-white hover:bg-white hover:border hover:border-green-600 hover:text-green-600">Publish</a>
             </div>
             <div v-if="image">
                 <img :src="image.url" alt="preview">
@@ -39,6 +39,17 @@ export default {
     },
 
     methods: {
+        store() {
+            const id = this.image ? this.image.id : null
+            axios.post('/api/posts', {title: this.title, content: this.content, image_id: id})
+                .then( res => {
+                    this.title = ''
+                    this.content = ''
+                    this.image = null
+                    console.log(res);
+                })
+        },
+
         selectFile() {
             this.fileInput = this.$refs.file;
             this.fileInput.click();
@@ -49,7 +60,7 @@ export default {
             const formData = new FormData()
             formData.append('image', file)
 
-            axios.post('/api/post_image', formData)
+            axios.post('/api/post_images', formData)
                 .then(res => {
                     this.image = res.data.data
                 })
