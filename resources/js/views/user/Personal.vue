@@ -1,6 +1,6 @@
 <template>
     <div class="w-96 mx-auto">
-        <div>
+        <div class="mb-4">
             <div>
                 <input v-model="title" class="w-96 mb-3 rounded-3xl border border-slate-400 p-2" type="text" placeholder="title">
             </div>
@@ -22,6 +22,15 @@
                     <a @click.prevent="image = null" href="#">Cancel</a>
                 </div>
             </div>
+            <div v-if="posts">
+                <h1 class="mb-8 pb-8 border-b border-gray-400">Posts</h1>
+                <div v-for="post in posts" class="mb-8 pb-8 border-b border-gray-400">
+                    <h1 class="text-xl">{{ post.title }}</h1>
+                    <img class="my-3 mx-auto" v-if="post.image_url" :src="post.image_url" :alt="post.title"/>
+                    <p>{{ post.content }}</p>
+                    <p class="mt-2 text-right text-slate-500 text-sm">{{ post.date }}</p>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -35,10 +44,23 @@ export default {
             title: '',
             content: '',
             image: null,
+            posts: []
         }
     },
 
+    mounted() {
+        this.getPosts()
+    },
+
     methods: {
+
+        getPosts() {
+            axios.get('/api/posts')
+                .then( res => {
+                    this.posts = res.data.data
+                })
+        },
+
         store() {
             const id = this.image ? this.image.id : null
             axios.post('/api/posts', {title: this.title, content: this.content, image_id: id})
@@ -46,7 +68,7 @@ export default {
                     this.title = ''
                     this.content = ''
                     this.image = null
-                    console.log(res);
+                    this.posts.unshift(res.data.data)
                 })
         },
 
