@@ -46,9 +46,11 @@ class UserController extends Controller
     public function followingPost()
     {
         $followedIds = auth()->user()->followings()->latest()->get()->pluck('id')->toArray();
-        $posts = Post::whereIn('user_id', $followedIds)->get();
 
-        $posts = $this->prepareLikedPosts($posts);
+        $likedPostIds = LikedPost::where('user_id', auth()->id())->get('post_id')->pluck('post_id')->toArray();
+
+        $posts = Post::whereIn('user_id', $followedIds)->whereNotIn('id', $likedPostIds)->get();
+
         return PostResource::collection($posts);
     }
 
