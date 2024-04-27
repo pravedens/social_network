@@ -32,10 +32,16 @@
         </div>
         <div v-if="is_repost" class="mt-4">
             <div>
-                <input v-model="title" class="w-96 mb-3 rounded-3xl border border-slate-400 p-2" type="text" placeholder="title">
+                <input v-model="title" class="w-96 rounded-3xl border border-slate-400 p-2" type="text" placeholder="title">
+                <div v-if="errors.title">
+                    <p v-for="error in errors.title" class="text-sm mb-3 text-red-500">{{ error }}</p>
+                </div>
             </div>
             <div>
-                <textarea v-model="content" class="w-96 mb-3 rounded-3xl border border-slate-400 p-2" placeholder="content"></textarea>
+                <textarea v-model="content" class="w-96 rounded-3xl border border-slate-400 p-2" placeholder="content"></textarea>
+                <div v-if="errors.content">
+                    <p v-for="error in errors.content" class="text-sm mb-3 text-red-500">{{ error }}</p>
+                </div>
             </div>
             <div class="flex mb-3 items-center mt-4">
                 <div class="mr-4">
@@ -67,7 +73,8 @@ export default {
             content: '',
             body: '',
             is_repost: false,
-            repostedId: null
+            repostedId: null,
+            errors: [],
         }
     },
 
@@ -99,6 +106,9 @@ export default {
                 .then( res => {
                     this.title = ''
                     this.content = ''
+                })
+                .catch( e => {
+                    this.errors = e.response.data.errors;
                 })
         },
 

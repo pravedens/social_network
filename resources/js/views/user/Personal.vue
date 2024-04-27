@@ -1,11 +1,17 @@
 <template>
     <div class="w-96 mx-auto">
         <div class="mb-4">
-            <div>
-                <input v-model="title" class="w-96 mb-3 rounded-3xl border border-slate-400 p-2" type="text" placeholder="title">
+            <div class="mb-3">
+                <input v-model="title" class="w-96 rounded-3xl border border-slate-400 p-2" type="text" placeholder="title">
+                <div v-if="errors.title">
+                    <p v-for="error in errors.title" class="text-sm text-red-500">{{ error }}</p>
+                </div>
             </div>
-            <div>
-                <textarea v-model="content" class="w-96 mb-3 rounded-3xl border border-slate-400 p-2" placeholder="content"></textarea>
+            <div class="mb-3">
+                <textarea v-model="content" class="w-96 rounded-3xl border border-slate-400 p-2" placeholder="content"></textarea>
+                <div v-if="errors.content">
+                    <p v-for="error in errors.content" class="text-sm text-red-500">{{ error }}</p>
+                </div>
             </div>
             <div class="flex mb-3 items-center mt-4">
                 <div class="mr-4">
@@ -40,7 +46,8 @@ export default {
             title: '',
             content: '',
             image: null,
-            posts: []
+            posts: [],
+            errors: [],
         }
     },
 
@@ -69,6 +76,9 @@ export default {
                     this.content = ''
                     this.image = null
                     this.posts.unshift(res.data.data)
+                })
+                .catch( e => {
+                    this.errors = e.response.data.errors;
                 })
         },
 
