@@ -49,6 +49,16 @@
                 </div>
             </div>
         </div>
+        <div v-if="post.comments_count > 0" class="mt-4">
+            <p @click="getComments(post)">Show {{ post.comments_count }} comments</p>
+            <div v-if="comments">
+                <div v-for="comment in comments" class="mt-4 pt-4 border-t border-gray-300">
+                    <p class="text-sm">{{ comment.user.name }}</p>
+                    <p>{{ comment.body }}</p>
+                    <p class="text-right text-sm">{{ comment.date }}</p>
+                </div>
+            </div>
+        </div>
         <div class="mt-4">
             <div class="mb-3">
                 <input v-model="body" class="w-96 mb-3 rounded-3xl border border-slate-400 p-2" type="text" placeholder="title">
@@ -75,6 +85,7 @@ export default {
             is_repost: false,
             repostedId: null,
             errors: [],
+            comments: []
         }
     },
 
@@ -92,6 +103,13 @@ export default {
                 .then( res => {
                     this.body = ''
                     console.log(res);
+                })
+        },
+
+        getComments(post) {
+            axios.get(`/api/posts/${post.id}/comment`)
+                .then( res => {
+                    this.comments = res.data.data
                 })
         },
 
