@@ -43,6 +43,14 @@
                 </div>
             </div>
         </div>
+        <div class="mt-4">
+            <div class="mb-3">
+                <input v-model="body" class="w-96 mb-3 rounded-3xl border border-slate-400 p-2" type="text" placeholder="title">
+            </div>
+            <div class="flex mb-3">
+                <a @click.prevent="storeComment(post)" href="#" class="block p-2 w-32 text-center rounded-3xl bg-green-600 text-white hover:bg-white hover:border hover:border-green-600 hover:text-green-600">Comment</a>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -57,6 +65,7 @@ export default {
         return {
             title: '',
             content: '',
+            body: '',
             is_repost: false,
             repostedId: null
         }
@@ -68,6 +77,14 @@ export default {
                 .then( res => {
                     post.is_liked = res.data.is_liked
                     post.likes_count = res.data.likes_count
+                })
+        },
+
+        storeComment(post) {
+            axios.post(`/api/posts/${post.id}/comment`, {body: this.body})
+                .then( res => {
+                    this.body = ''
+                    console.log(res);
                 })
         },
 
