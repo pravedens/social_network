@@ -7,12 +7,6 @@
             <div>
                 <textarea v-model="content" class="w-96 mb-3 rounded-3xl border border-slate-400 p-2" placeholder="content"></textarea>
             </div>
-            <div class="flex mb-3">
-                <a @click.prevent="store" href="#" class="block p-2 w-32 text-center rounded-3xl bg-green-600 text-white hover:bg-white hover:border hover:border-green-600 hover:text-green-600">Publish</a>
-            </div>
-            <div v-if="image">
-                <img :src="image.url" alt="preview">
-            </div>
             <div class="flex mb-3 items-center mt-4">
                 <div class="mr-4">
                     <input @change="storeImage" ref="file" type="file" class="hidden">
@@ -21,6 +15,12 @@
                 <div>
                     <a @click.prevent="image = null" href="#">Cancel</a>
                 </div>
+            </div>
+            <div v-if="image">
+                <img :src="image.url" alt="preview">
+            </div>
+            <div class="flex mb-3">
+                <a @click.prevent="store" href="#" class="block p-2 w-32 text-center rounded-3xl bg-green-600 text-white hover:bg-white hover:border hover:border-green-600 hover:text-green-600">Publish</a>
             </div>
             <div v-if="posts">
                 <h1 class="mb-8 pb-8 border-b border-gray-400">Posts</h1>
