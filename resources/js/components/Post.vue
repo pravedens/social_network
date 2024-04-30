@@ -30,7 +30,7 @@
 
             <p class="text-right text-slate-500 text-sm">{{ post.date }}</p>
         </div>
-        <div v-if="is_repost" class="mt-4">
+        <div v-if="isRepost" class="mt-4">
             <div>
                 <input v-model="title" class="w-96 rounded-3xl border border-slate-400 p-2" type="text" placeholder="title">
                 <div v-if="errors.title">
@@ -50,8 +50,9 @@
             </div>
         </div>
         <div v-if="post.comments_count > 0" class="mt-4">
-            <p @click="getComments(post)">Show {{ post.comments_count }} comments</p>
-            <div v-if="comments">
+            <p v-if="!isShowed" @click="getComments(post)">Show {{ post.comments_count }} comments</p>
+            <p v-if="isShowed" @click="isShowed = false">Close</p>
+            <div v-if="comments && isShowed">
                 <div v-for="comment in comments" class="mt-4 pt-4 border-t border-gray-300">
                     <p class="text-sm">{{ comment.user.name }}</p>
                     <p>{{ comment.body }}</p>
@@ -82,10 +83,11 @@ export default {
             title: '',
             content: '',
             body: '',
-            is_repost: false,
+            isRepost: false,
             repostedId: null,
             errors: [],
-            comments: []
+            comments: [],
+            isShowed: false
         }
     },
 
@@ -102,7 +104,9 @@ export default {
             axios.post(`/api/posts/${post.id}/comment`, {body: this.body})
                 .then( res => {
                     this.body = ''
-                    console.log(res);
+                    this.comments.unshift(res.data.data)
+                    post.comments_count++
+                    this.isShowed = true
                 })
         },
 
@@ -110,12 +114,13 @@ export default {
             axios.get(`/api/posts/${post.id}/comment`)
                 .then( res => {
                     this.comments = res.data.data
+                    this.isShowed = true
                 })
         },
 
         openRepost() {
             if(this.isPersonal()) return
-            this.is_repost = !this.is_repost
+            this.isRepost = !this.isRepost
         },
 
         repost(post) {
