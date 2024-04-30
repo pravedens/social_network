@@ -54,14 +54,21 @@
             <p v-if="isShowed" @click="isShowed = false">Close</p>
             <div v-if="comments && isShowed">
                 <div v-for="comment in comments" class="mt-4 pt-4 border-t border-gray-300">
-                    <p class="text-sm">{{ comment.user.name }}</p>
-                    <p>{{ comment.body }}</p>
+                    <div class="flex mb-2">
+                        <p class="text-sm mr-2">{{ comment.user.name }}</p>
+                        <p @click="setParentId(comment)" class="text-sm text-sky-500 cursor-pointer">Ответить</p>
+                    </div>
+                    <p><span v-if="comment.answered_for_user" class="text-sky-400">{{ comment.answered_for_user }},</span>{{ comment.body }}</p>
                     <p class="text-right text-sm">{{ comment.date }}</p>
                 </div>
             </div>
         </div>
         <div class="mt-4">
             <div class="mb-3">
+                <div class="flex items-center">
+                    <p v-if="comment" class="mr-2">Ответить {{ comment.user.name }}</p>
+                    <p v-if="comment" @click="comment = null" class="text-sm cursor-pointer text-sky-400">Cancel</p>
+                </div>
                 <input v-model="body" class="w-96 mb-3 rounded-3xl border border-slate-400 p-2" type="text" placeholder="title">
             </div>
             <div class="flex mb-3">
@@ -87,7 +94,8 @@ export default {
             repostedId: null,
             errors: [],
             comments: [],
-            isShowed: false
+            isShowed: false,
+            comment: null
         }
     },
 
@@ -100,11 +108,16 @@ export default {
                 })
         },
 
+        setParentId(comment) {
+            this.comment = comment
+        },
+
         storeComment(post) {
-            axios.post(`/api/posts/${post.id}/comment`, {body: this.body})
+            axios.post(`/api/posts/${post.id}/comment`, {body: this.body, parent_id: this.comment.id})
                 .then( res => {
                     this.body = ''
                     this.comments.unshift(res.data.data)
+                    this.comment = null
                     post.comments_count++
                     this.isShowed = true
                 })
