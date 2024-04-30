@@ -19,7 +19,7 @@
                     <a href="#" class="block p-2 w-32 text-center rounded-3xl bg-sky-500 text-white hover:bg-white hover:border hover:border-green-600 hover:text-green-600 ml-auto" @click.prevent="selectFile()">Image</a>
                 </div>
                 <div>
-                    <a @click.prevent="image = null" href="#">Cancel</a>
+                    <a v-if="image" @click.prevent="image = null" href="#">Cancel</a>
                 </div>
             </div>
             <div v-if="image">
