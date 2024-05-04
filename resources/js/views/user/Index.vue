@@ -8,7 +8,9 @@
                     <p>{{ user.email }}</p>
                 </router-link>
                 <div>
-                    <a @click.prevent="toggleFollowing(user)" :class="['block p-2 w-32 text-center rounded-3xl', user.is_followed ? 'bg-white text-sky-500 hover:bg-white hover:border hover:border-green-600 hover:text-green-600 ml-auto' : 'bg-sky-500 text-white hover:bg-white hover:border hover:border-green-600 hover:text-green-600 ml-auto']" href="#">Подписка</a>
+                    <a @click.prevent="toggleFollowing(user)"
+                       :class="['block p-2 w-32 text-center rounded-3xl', user.is_followed ? 'bg-white text-sky-500 hover:bg-white hover:border hover:border-green-600 hover:text-green-600 ml-auto' : 'bg-sky-500 text-white hover:bg-white hover:border hover:border-green-600 hover:text-green-600 ml-auto']" href="#">
+                        {{  user.is_followed ? 'Отписаться' : 'Подписаться'}}</a>
                 </div>
             </div>
         </div>
